@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path"
 	"runtime"
 	"time"
 
+	"github.com/natefinch/lumberjack"
 	"log/slog"
 
 	"github.com/banbridge/common/pkg/logs/handler"
@@ -27,7 +29,7 @@ func NewLogger() *StdLog {
 	consoleHandler := handler.NewConsoleHandler(os.Stdout, nil)
 
 	// 文件输出（JSON格式）
-	file := mustOpenLogFile("app.log")
+	file := mustOpenLogFile("logs")
 	fileHandler := slog.NewJSONHandler(file, &slog.HandlerOptions{
 		AddSource: true,
 	})
@@ -40,12 +42,22 @@ func NewLogger() *StdLog {
 	}
 }
 
-func mustOpenLogFile(path string) io.Writer {
-	file, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-	if err != nil {
-		panic(err)
+func mustOpenLogFile(dir string) io.Writer {
+	// ======================输出文件============================
+	// 将文件名设置为日期
+	logFileName := time.Now().Format("2006-01-02_15") + ".log"
+	fileName := path.Join(dir, logFileName)
+	// 提供压缩和删除
+	lumberjackLogger := &lumberjack.Logger{
+		Filename:   fileName,
+		MaxSize:    200,  // 一个文件最大可达 20M。
+		MaxBackups: 50,   // 最多同时保存 5 个文件。
+		MaxAge:     10,   // 一个文件最多可以保存 10 天。
+		Compress:   true, // 用 gzip 压缩。
 	}
-	return file
+	defer lumberjackLogger.Close()
+
+	return lumberjackLogger
 }
 
 func (l *StdLog) Info(msg string, args ...any) {
