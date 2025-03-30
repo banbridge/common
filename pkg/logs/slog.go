@@ -18,12 +18,18 @@ import (
 // StdLog 自定义日志记录器
 type StdLog struct {
 	inner *slog.Logger
-	op    SlogOption
+	op    *SlogOption
 }
 
 var _ Logger = &StdLog{}
 
-func NewLogger() *StdLog {
+func NewLogger(opts ...LoggerOption) *StdLog {
+
+	logOpt := getDefaultOpt()
+
+	for _, opt := range opts {
+		opt(logOpt)
+	}
 
 	// 控制台输出（文本格式）
 	consoleHandler := handler.NewConsoleHandler(os.Stdout, nil)
@@ -36,9 +42,7 @@ func NewLogger() *StdLog {
 
 	return &StdLog{
 		inner: slog.New(handler.MultiHandler{consoleHandler, fileHandler}),
-		op: SlogOption{
-			CallDepth: 1,
-		},
+		op:    logOpt,
 	}
 }
 

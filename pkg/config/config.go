@@ -13,7 +13,7 @@ import (
 	_ "github.com/banbridge/common/pkg/encoding/proto"
 	_ "github.com/banbridge/common/pkg/encoding/xml"
 	_ "github.com/banbridge/common/pkg/encoding/yaml"
-	"github.com/banbridge/common/pkg/logs_"
+	"github.com/banbridge/common/pkg/logs"
 )
 
 var _ Config = (*config)(nil)
@@ -63,19 +63,19 @@ func (c *config) watch(w Watcher) {
 		kvs, err := w.Next()
 		if err != nil {
 			if errors.Is(err, context.Canceled) {
-				logs_.Infof("watcher's ctx cancel : %v", err)
+				logs.Info("watcher's ctx cancel : %v", err)
 				return
 			}
 			time.Sleep(time.Second)
-			logs_.Errorf("failed to watch next config: %v", err)
+			logs.Error("failed to watch next config: %v", err)
 			continue
 		}
 		if err := c.reader.Merge(kvs...); err != nil {
-			logs_.Errorf("failed to merge next config: %v", err)
+			logs.Error("failed to merge next config: %v", err)
 			continue
 		}
 		if err := c.reader.Resolve(); err != nil {
-			logs_.Errorf("failed to resolve next config: %v", err)
+			logs.Error("failed to resolve next config: %v", err)
 			continue
 		}
 		c.cached.Range(func(key, value interface{}) bool {
@@ -99,22 +99,22 @@ func (c *config) Load() error {
 			return err
 		}
 		for _, v := range kvs {
-			logs_.Debugf("config loaded: %s format: %s", v.Key, v.Format)
+			logs.Debug("config loaded: %s format: %s", v.Key, v.Format)
 		}
 		if err = c.reader.Merge(kvs...); err != nil {
-			logs_.Errorf("failed to merge config source: %v", err)
+			logs.Error("failed to merge config source: %v", err)
 			return err
 		}
 		w, err := src.Watch()
 		if err != nil {
-			logs_.Errorf("failed to watch config source: %v", err)
+			logs.Error("failed to watch config source: %v", err)
 			return err
 		}
 		c.watchers = append(c.watchers, w)
 		go c.watch(w)
 	}
 	if err := c.reader.Resolve(); err != nil {
-		logs_.Errorf("failed to resolve config source: %v", err)
+		logs.Error("failed to resolve config source: %v", err)
 		return err
 	}
 	return nil

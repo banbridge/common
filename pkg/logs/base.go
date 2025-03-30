@@ -19,7 +19,8 @@ type Logger interface {
 }
 
 var (
-	stdLog = NewLogger()
+	stdLog        = NewLogger()
+	DefaultLogger = NewLogger(WithCallDepth(1))
 )
 
 func Info(msg string, args ...any) {
