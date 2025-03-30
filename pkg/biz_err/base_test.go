@@ -2,6 +2,7 @@ package biz_err
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/banbridge/common/pkg/logs"
@@ -20,5 +21,17 @@ func getErr(ctx context.Context) error {
 
 func TestLog1(t *testing.T) {
 	logs.Info("msg")
+
+}
+
+func TestFromError(t *testing.T) {
+	ctx := context.Background()
+
+	err := FromError(ctx, nil)
+
+	fmt.Println(err.Error())
+}
+
+func TestWrapError(t *testing.T) {
 
 }

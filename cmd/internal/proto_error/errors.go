@@ -10,11 +10,11 @@ import (
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/proto"
 
-	"github.com/banbridge/common/cmd/petal/internal/proto_error/errors"
+	"github.com/banbridge/common/cmd/internal/proto_error/errors"
 )
 
 const (
-	errorsPackage  = protogen.GoImportPath("github.com/banbridge/common/pkg/errors")
+	errorsPackage  = protogen.GoImportPath("github.com/banbridge/common/pkg/biz_err")
 	fmtPackage     = protogen.GoImportPath("fmt")
 	contextPackage = protogen.GoImportPath("context")
 )

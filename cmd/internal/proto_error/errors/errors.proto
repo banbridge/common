@@ -2,18 +2,9 @@ syntax = "proto3";
 
 package errors;
 
-option go_package = "github.com/banbridge/common/cmd/petal/internal/proto_error/errors;errors";
+option go_package = "github.com/banbridge/common/cmd/internal/proto_error/errors;errors";
 
 import "google/protobuf/descriptor.proto";
-
-message Status {
-  int32 code = 1;
-  string reason = 2;
-  string message = 3;
-  int32 biz_code = 4;
-  string biz_msg = 5;
-  map<string, string> Metadata = 255;
-};
 
 extend google.protobuf.EnumOptions {
   int32 default_code = 1108;

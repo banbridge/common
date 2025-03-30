@@ -8,7 +8,7 @@ func WithErrorStack(withStack bool) ErrorOption {
 	}
 }
 
-func WithSkipDepth(depth int) ErrorOption {
+func WithDepth(depth int) ErrorOption {
 	return func(e *BizError) {
 		e.depth = depth
 	}
@@ -17,5 +17,17 @@ func WithSkipDepth(depth int) ErrorOption {
 func WithHttpStatus(status int) ErrorOption {
 	return func(e *BizError) {
 		e.httpStatus = status
+	}
+}
+
+func WithReason(reason string) ErrorOption {
+	return func(e *BizError) {
+		e.reason = reason
+	}
+}
+
+func WithLogLevel(level ErrorLevel) ErrorOption {
+	return func(e *BizError) {
+		e.level = level
 	}
 }

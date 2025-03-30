@@ -11,12 +11,26 @@ import (
 	"github.com/banbridge/common/pkg/logs"
 )
 
+// ErrorLevel is the level of error.
+type ErrorLevel int8
+
+const (
+	// LevelInfo  is debug level.
+	LevelInfo ErrorLevel = iota
+	// LevelWarn is warn level.
+	LevelWarn
+	// LevelError is error level.
+	LevelError
+)
+
 type BizError struct {
 	msg        string
 	code       string
 	httpStatus int
 	bizMsg     string
+	reason     string
 
+	level  ErrorLevel
 	fnName string
 	stack  []byte
 
@@ -65,6 +79,18 @@ func (e *BizError) Error() string {
 	return buf.String()
 }
 
+func (e *BizError) Code() string {
+	return e.code
+}
+
+func (e *BizError) HttpCode() int {
+	return e.httpStatus
+}
+
+func (e *BizError) Reason() string {
+	return e.reason
+}
+
 func (e *BizError) Stack() []byte {
 	const depth = 32
 	var pcs [depth]uintptr
@@ -99,4 +125,23 @@ func (e *BizError) getCurrentLocation() string {
 		return "??:0"
 	}
 	return filepath.Base(file) + ":" + strconv.Itoa(line)
+}
+
+// logFunc defines log print functions.
+type logFunc func(ctx context.Context, format string, v ...interface{})
+
+func (e *BizError) ctxLog(ctx context.Context) {
+	e.getLogFunc()(ctx, "%s", e.Error())
+}
+
+func (e *BizError) getLogFunc() logFunc {
+	switch e.level {
+	case LevelInfo:
+		return logs.CtxInfo
+	case LevelWarn:
+		return logs.CtxWarn
+	case LevelError:
+		return logs.CtxError
+	}
+	return logs.CtxError
 }
