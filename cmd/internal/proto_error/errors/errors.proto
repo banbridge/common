@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package errors;
+
+option go_package = "github.com/banbridge/common/cmd/internal/proto_error/errors;errors";
+
+import "google/protobuf/descriptor.proto";
+
+extend google.protobuf.EnumOptions {
+  int32 default_code = 1108;
+  string default_biz_msg = 1200;
+}
+
+extend google.protobuf.EnumValueOptions {
+  int32 code = 1109;
+  string biz_msg = 2110;
+}
