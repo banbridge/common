@@ -11,7 +11,7 @@ import (
 )
 
 func Convert[S, T any](ctx context.Context, src S, dst T) error {
-	if ptr.IsPtr(src) || ptr.IsPtr(dst) {
+	if ptr.IsNil(src) || ptr.IsNil(dst) {
 		return errors.New("src or dst is nil")
 	}
 
