@@ -1,8 +1,10 @@
-package logs
+package ctx_values
 
 import (
 	"context"
 	"testing"
+
+	"github.com/banbridge/common/pkg/logs"
 )
 
 func TestKVs(t *testing.T) {
@@ -12,5 +14,5 @@ func TestKVs(t *testing.T) {
 
 	kvs := GetAllKVs(ctx)
 
-	CtxInfo(ctx, "kvs:%+v", kvs)
+	logs.CtxInfo(ctx, "kvs:%+v", kvs)
 }

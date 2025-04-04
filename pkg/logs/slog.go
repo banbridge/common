@@ -12,6 +12,7 @@ import (
 	"github.com/natefinch/lumberjack"
 	"log/slog"
 
+	"github.com/banbridge/common/pkg/ctx_values"
 	"github.com/banbridge/common/pkg/logs/handler"
 )
 
@@ -113,7 +114,7 @@ func (l *StdLog) log(ctx context.Context, level slog.Level, msg string, args ...
 		attrs = append(attrs, slog.String("log_id", logID))
 	}
 
-	kvs := GetAllKVs(ctx)
+	kvs := ctx_values.GetAllKVs(ctx)
 
 	for i := 0; i < len(kvs); i += 2 {
 		str := kvs[i].(string)

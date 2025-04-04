@@ -18,7 +18,7 @@ func Is{{.CamelValue}}(ctx context.Context, err error) bool {
 }
 
 {{ if .HasComment }}{{ .Comment }}{{ end -}}
-func Error{{ .CamelValue }}(ctx context.Context, format string, args ...any) *errors.BizError {
+func Error{{ .CamelValue }}(ctx context.Context, format string, args ...any) *biz_err.BizError {
 	return biz_err.NewError(ctx, "{{ .BizCode }}", fmt.Sprintf(format, args...),
 		biz_err.WithHttpStatus({{ .HTTPCode }}), biz_err.WithBizMsg("{{ .BizMsg }}"), biz_err.WithReason({{ .Name }}_{{ .Value }}.String()), biz_err.WithDepth(3))	
 }

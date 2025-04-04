@@ -6,6 +6,8 @@ import (
 	"testing"
 
 	"log/slog"
+
+	"github.com/banbridge/common/pkg/ctx_values"
 )
 
 func TestGenLogID(t *testing.T) {
@@ -30,7 +32,7 @@ func TestStdLogger(t *testing.T) {
 
 	ctx := context.Background()
 	ctx = context.WithValue(ctx, CTXKeyLogID, GenLogID())
-	ctx = CtxAddKVs(ctx, "key-add", "value")
+	ctx = ctx_values.CtxAddKVs(ctx, "key-add", "value")
 	logID := GenLogID()
 	CtxInfo(ctx, "test id %s", logID)
 	logID = GenLogID()
