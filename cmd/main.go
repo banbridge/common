@@ -5,8 +5,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/banbridge/common/cmd/petal/internal/proto"
-	"github.com/banbridge/common/cmd/petal/internal/upgrade"
+	"github.com/banbridge/common/cmd/internal/proto"
+	"github.com/banbridge/common/cmd/internal/upgrade"
 )
 
 const release = "v0.0.1"

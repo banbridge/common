@@ -3,9 +3,9 @@ package proto
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/banbridge/common/cmd/petal/internal/proto/add"
-	"github.com/banbridge/common/cmd/petal/internal/proto/client"
-	"github.com/banbridge/common/cmd/petal/internal/proto/server"
+	"github.com/banbridge/common/cmd/internal/proto/add"
+	"github.com/banbridge/common/cmd/internal/proto/client"
+	"github.com/banbridge/common/cmd/internal/proto/server"
 )
 
 var CmdProto = &cobra.Command{

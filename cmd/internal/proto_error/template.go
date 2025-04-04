@@ -9,17 +9,18 @@ var errorsTemplate = `
 {{ range .Errors }}
 
 {{ if .HasComment }}{{ .Comment }}{{ end -}}
-func Is{{.CamelValue}}(err error) bool {
+func Is{{.CamelValue}}(ctx context.Context, err error) bool {
 	if err == nil {
 		return false
 	}
-	e := errors.FromError(err)
-	return e.Reason() == {{ .Name }}_{{ .Value }}.String() && e.HttpCode() == {{ .HTTPCode }} &&  e.Code() == {{ .BizCode }}
+	e := biz_err.FromError(ctx, err)
+	return e.Code() == "{{ .BizCode }}"
 }
 
 {{ if .HasComment }}{{ .Comment }}{{ end -}}
-func Error{{ .CamelValue }}(ctx context.Context, format string, args ...any) *errors.Error {
-	 return errors.New(ctx, {{ .HTTPCode }}, int({{ .Name }}_{{ .Value }}.Number()), {{ .Name }}_{{ .Value }}.String(), "{{ .BizMsg }}", fmt.Sprintf(format, args...))
+func Error{{ .CamelValue }}(ctx context.Context, format string, args ...any) *errors.BizError {
+	return biz_err.NewError(ctx, "{{ .BizCode }}", fmt.Sprintf(format, args...),
+		biz_err.WithHttpStatus({{ .HTTPCode }}), biz_err.WithBizMsg("{{ .BizMsg }}"), biz_err.WithReason({{ .Name }}_{{ .Value }}.String()), biz_err.WithDepth(3))	
 }
 
 {{- end }}

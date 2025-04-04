@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/banbridge/common/cmd/petal/internal/base"
+	"github.com/banbridge/common/cmd/internal/base"
 )
 
 // CmdUpgrade represents the upgrade command.

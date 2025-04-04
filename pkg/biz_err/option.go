@@ -20,6 +20,12 @@ func WithHttpStatus(status int) ErrorOption {
 	}
 }
 
+func WithBizMsg(msg string) ErrorOption {
+	return func(e *BizError) {
+		e.bizMsg = msg
+	}
+}
+
 func WithReason(reason string) ErrorOption {
 	return func(e *BizError) {
 		e.reason = reason

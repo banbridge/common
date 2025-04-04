@@ -31,7 +31,3 @@ func TestFromError(t *testing.T) {
 
 	fmt.Println(err.Error())
 }
-
-func TestWrapError(t *testing.T) {
-
-}

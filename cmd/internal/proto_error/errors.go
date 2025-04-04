@@ -2,6 +2,7 @@ package proto_error
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 	"unicode"
 
@@ -34,6 +35,8 @@ func generateFile(gen *protogen.Plugin, file *protogen.File) *protogen.Generated
 	g.P()
 	g.QualifiedGoIdent(contextPackage.Ident(""))
 	g.QualifiedGoIdent(fmtPackage.Ident(""))
+	g.P()
+	g.QualifiedGoIdent(errorsPackage.Ident(""))
 	generateFileContent(gen, file, g)
 	return g
 }
@@ -110,6 +113,7 @@ func genErrorsReason(gen *protogen.Plugin, file *protogen.File, g *protogen.Gene
 			Comment:    comment,
 			HasComment: len(comment) > 0,
 			BizMsg:     errBizMsg,
+			BizCode:    strconv.Itoa(int(v.Desc.Number())),
 		}
 		ew.Errors = append(ew.Errors, err)
 	}
