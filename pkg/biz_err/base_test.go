@@ -11,6 +11,7 @@ import (
 func TestStack(t *testing.T) {
 	err := getErr(context.Background())
 	if err != nil {
+		logs.Info("get err:%+v", err)
 		return
 	}
 }
