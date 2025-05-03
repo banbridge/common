@@ -24,6 +24,7 @@ const (
 )
 
 type BizError struct {
+	base       error
 	msg        string
 	code       string
 	httpStatus int
@@ -61,14 +62,14 @@ func NewError(ctx context.Context, code, msg string, opts ...ErrorOption) *BizEr
 	}
 
 	if err.logger != nil {
-		err.logger.CtxError(ctx, "%s", err.Error())
+		err.logger.CtxError(ctx, "%s", err.String())
 	}
 
 	return err
 
 }
 
-func (e *BizError) Error() string {
+func (e *BizError) String() string {
 	var buf bytes.Buffer
 
 	buf.WriteString(fmt.Sprintf("[%s] code=%s, msg=%s, bizMsg=%s ",
@@ -77,6 +78,19 @@ func (e *BizError) Error() string {
 		buf.Write(e.stack)
 	}
 	return buf.String()
+}
+
+func (e *BizError) Error() string {
+	return e.msg
+}
+
+// Format implements fmt.Formatter.
+func (e *BizError) Format(f fmt.State, verb rune) {
+	switch verb {
+	case 'v', 's':
+		f.Write([]byte(e.Error()))
+		return
+	}
 }
 
 func (e *BizError) Code() string {
@@ -118,6 +132,15 @@ func (e *BizError) Stack() []byte {
 	return buffer.Bytes()
 }
 
+func (e *BizError) Wrap(err error) *BizError {
+	e.base = err
+	return e
+}
+
+func (e *BizError) Unwrap() error {
+	return e.base
+}
+
 func (e *BizError) getCurrentLocation() string {
 
 	_, file, line, ok := runtime.Caller(e.depth)
@@ -131,7 +154,7 @@ func (e *BizError) getCurrentLocation() string {
 type logFunc func(ctx context.Context, format string, v ...interface{})
 
 func (e *BizError) ctxLog(ctx context.Context) {
-	e.getLogFunc()(ctx, "%s", e.Error())
+	e.getLogFunc()(ctx, "%s", e.String())
 }
 
 func (e *BizError) getLogFunc() logFunc {
