@@ -1,4 +1,4 @@
-package ptr
+package gptr
 
 import "testing"
 
@@ -6,7 +6,7 @@ type Foo struct {
 }
 
 func TestIsPtr(t *testing.T) {
-	f := IsPtr[*Foo](nil)
+	f := IsPtr(1)
 	t.Logf("result: %v", f)
 
 }
