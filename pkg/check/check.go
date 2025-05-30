@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/banbridge/common/pkg/ptr"
+	"github.com/banbridge/common/pkg/gptr"
 )
 
 type ErrContext struct {

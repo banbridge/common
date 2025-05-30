@@ -41,3 +41,7 @@ func IndirectOr[T any](v *T, or T) T {
 	}
 	return *v
 }
+
+func IsNil(v any) bool {
+	return gvalue.IsNil(v)
+}
