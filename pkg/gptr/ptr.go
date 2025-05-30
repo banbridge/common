@@ -1,6 +1,10 @@
 package gptr
 
-import "github.com/banbridge/common/pkg/gvalue"
+import (
+	"reflect"
+
+	"github.com/banbridge/common/pkg/gvalue"
+)
 
 func Of[T any](v T) *T {
 	return &v
@@ -44,4 +48,12 @@ func IndirectOr[T any](v *T, or T) T {
 
 func IsNil(v any) bool {
 	return gvalue.IsNil(v)
+}
+
+func IsPtr[T any](v T) bool {
+	//if v == nil {
+	//	return false
+	//}
+
+	return reflect.TypeOf(v).Kind() == reflect.Ptr
 }
