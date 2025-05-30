@@ -7,7 +7,7 @@ import (
 	"github.com/jinzhu/copier"
 	"github.com/mohae/deepcopy"
 
-	"github.com/banbridge/common/pkg/ptr"
+	"github.com/banbridge/common/pkg/gptr"
 )
 
 func Convert[S, T any](ctx context.Context, src S, dst T) error {

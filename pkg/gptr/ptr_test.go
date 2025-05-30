@@ -21,3 +21,14 @@ func TestIsNil(t *testing.T) {
 	})
 
 }
+
+func TestIsPtr(t *testing.T) {
+
+	if IsPtr(Foo{}) {
+		t.Fail()
+	}
+
+	if !IsPtr(&Foo{}) {
+		t.Fail()
+	}
+}
