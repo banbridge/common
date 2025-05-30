@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/banbridge/common/pkg/ptr"
+	"github.com/banbridge/common/pkg/gptr"
 )
 
 type ErrContext struct {
@@ -44,7 +44,7 @@ func NotBlank(str string, format string, args ...any) error {
 
 // NotNil 检查是否为空
 func NotNil(obj any, format string, args ...any) error {
-	if ptr.IsNil(obj) {
+	if gptr.IsNil(obj) {
 		return errors.New(fmt.Sprintf(format, args...))
 	}
 	return nil
