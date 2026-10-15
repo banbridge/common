@@ -1,5 +1,0 @@
-package consts
-
-const (
-	TimeWithMS = "2006/01/02 15:04:05.000000"
-)
