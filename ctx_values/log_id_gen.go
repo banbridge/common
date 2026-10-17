@@ -1,4 +1,4 @@
-package logs
+package ctx_values
 
 import (
 	"context"
@@ -41,14 +41,14 @@ func init() {
 	}
 	localIP = ipToBytes(ip)
 
-	defaultLogID = NewLogID()
+	defaultLogID = NewGenLogID()
 }
 
 // LogID represents a logID generator
 type LogID struct{}
 
-// NewLogID create a new LogID instance
-func NewLogID() LogID {
+// NewGenLogID create a new LogID instance
+func NewGenLogID() LogID {
 	return LogID{}
 }
 
