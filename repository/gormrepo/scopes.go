@@ -9,6 +9,12 @@ import (
 	"gorm.io/gorm/clause"
 )
 
+func ClausesV2(conds ...clause.Expression) func(tx *gorm.Statement) {
+	return func(tx *gorm.Statement) {
+		tx.Scopes(Clauses(conds...))
+	}
+}
+
 // Clauses converts raw GORM clauses into a scope.
 func Clauses(conds ...clause.Expression) func(tx *gorm.DB) *gorm.DB {
 	return func(tx *gorm.DB) *gorm.DB {

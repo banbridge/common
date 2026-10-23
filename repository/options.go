@@ -48,24 +48,3 @@ type ListOptions struct {
 	OrderBy       []OrderBy
 	SelectColumns []string
 }
-
-// Operator defines the query condition operator enum.
-type Operator string
-
-const (
-	Eq    Operator = "="
-	In    Operator = "IN"
-	Gt    Operator = ">"
-	Lt    Operator = "<"
-	Gte   Operator = ">="
-	Lte   Operator = "<="
-	NotEq Operator = "!="
-	NotIn Operator = "NOT IN"
-)
-
-// Condition represents one query condition.
-type Condition struct {
-	Field    string
-	Operator Operator
-	Value    any
-}
