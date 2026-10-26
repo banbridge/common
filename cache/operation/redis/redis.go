@@ -17,7 +17,7 @@ type redisCache struct {
 
 // NewRedisCache creates a Redis-backed BaseCache. prefix is prepended to every
 // key and is expected to end with the separator used by the deployment.
-func NewRedisCache(cli  *redis.Client, prefix string) cache.RedisBaseCache {
+func NewRedisCache(cli *redis.Client, prefix string) cache.RedisBaseCache {
 	return &redisCache{cli: cli, prefix: prefix}
 }
 
