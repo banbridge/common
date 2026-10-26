@@ -10,7 +10,7 @@ import (
 )
 
 type testAccount struct {
-	ID       uint   `gorm:"primaryKey"`
+	ID       uint   `gorm:"primaryKey,autoIncrement"`
 	Address  string `gorm:"uniqueIndex"`
 	Balance  float64
 	Category string

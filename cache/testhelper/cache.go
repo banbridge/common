@@ -9,6 +9,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/alicebob/miniredis/v2"
 	bigcache "github.com/allegro/bigcache/v3"
 	redis "github.com/redis/go-redis/v9"
 )
@@ -129,16 +130,20 @@ func (f *FakeRedisClient) Close() error {
 	return nil
 }
 
-// SetupTestCacheClient returns a fake Redis client and a real bigcache for
-// cache component tests.
+// SetupTestCacheClient returns a real miniredis-backed Redis client and a
+// bigcache local cache for cache component tests. Tests that need a *redis.Client
+// must use this, not the FakeRedisClient: the fake only implements a handful
+// of methods on its own struct and embeds a nil client.
 func SetupTestCacheClient(t *testing.T) (*redis.Client, *bigcache.BigCache, func()) {
 	t.Helper()
-	cli := NewFakeRedisClient()
+	mr := miniredis.RunT(t)
+	cli := redis.NewClient(&redis.Options{Addr: mr.Addr()})
 	localCache, err := bigcache.New(context.Background(), bigcache.DefaultConfig(10*time.Minute))
 	if err != nil {
 		t.Fatalf("setup bigcache failed: %v", err)
 	}
-	return cli.Client, localCache, func() {
+	return cli, localCache, func() {
 		_ = localCache.Close()
+		_ = cli.Close()
 	}
 }

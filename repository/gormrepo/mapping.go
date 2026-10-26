@@ -4,6 +4,7 @@ import (
 	"errors"
 	"strings"
 
+	"github.com/go-sql-driver/mysql"
 	"gorm.io/gorm"
 
 	"github.com/banbridge/common/repository"
@@ -15,12 +16,15 @@ func isConflictError(err error) bool {
 	if err == nil {
 		return false
 	}
+	var mysqlErr *mysql.MySQLError
+	if errors.As(err, &mysqlErr) && mysqlErr.Number == 1062 {
+		return true
+	}
 	return errors.Is(err, repository.ErrConflict) ||
 		errors.Is(err, gorm.ErrDuplicatedKey) ||
 		strings.Contains(err.Error(), "UNIQUE constraint") ||
 		strings.Contains(err.Error(), "Duplicate entry")
 }
-
 
 // isNotFoundError detects both neutral and raw GORM not-found errors so they
 // can be mapped to repository.ErrNotFound at the GORM boundary.

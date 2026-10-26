@@ -32,5 +32,5 @@ func TestRedisCache(t *testing.T) {
 
 	require.NoError(t, cli.Delete(ctx, "test"))
 	_, err = cli.Get(ctx, "test")
-
+	require.ErrorIs(t, err, redis.Nil)
 }
